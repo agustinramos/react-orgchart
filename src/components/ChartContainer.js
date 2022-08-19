@@ -91,11 +91,20 @@ const ChartContainer = forwardRef(
       return data;
     };
 
+    const goToAnimation = ({ node, options }) => {
+      if (node)
+        document.querySelector('#'+node).scrollIntoView(options || {
+          behavior: 'smooth',
+            inline: 'center',
+            block: 'end'
+        })      
+    }
+
     const [ds, setDS] = useState(datasource);
     useEffect(() => {
       setDS(datasource);
       setTimeout(() => {
-        if (firstNodeId) goToAnimation(firstNodeId);  
+        if (firstNodeId) goToAnimation({ node: firstNodeId });  
       } , 300);
     }, [datasource]); // eslint-disable-line
 
@@ -317,22 +326,14 @@ const ChartContainer = forwardRef(
       center: function center() {
         setCurrentZoom(1);
         setTransform("matrix(1,0,0,1,0,0)");
-        goToAnimation(firstNodeId);
+        goToAnimation({ node: firstNodeId });
       },      
       goTo: function goTo({node, options}) {
         setCurrentZoom(1);
         setTransform("matrix(1,0,0,1,0,0)");
-        goToAnimation(node, options);
+        goToAnimation({ node, options });
       },
     }));
-
-    const goToAnimation = ({node, options}) => {
-      document.querySelector('#'+node).scrollIntoView(options || {
-        behavior: 'smooth',
-          inline: 'center',
-          block: 'end'
-      })      
-    }
     
     return (
       <div

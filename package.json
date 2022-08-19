@@ -1,5 +1,5 @@
 {
-  "name": "@fx2000/react-orgchart",
+  "name": "@eayti/react-orgchart",
   "version": "1.0.0",
   "main": "./dist/ChartContainer.js",
   "files": [
@@ -8,7 +8,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/fx2000/react-orgchart.git"
+    "url": "https://github.com/agustinramos/react-orgchart.git"
   },
   "keywords": [
     "react",
@@ -23,7 +23,7 @@
   "author": "duque@outlook.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fx2000/react-orgchart/issues"
+    "url": "https://github.com/agustinramos/react-orgchart/issues"
   },
   "homepage": "https://github.com/dabeng/react-orgchart#readme",
   "babel": {
