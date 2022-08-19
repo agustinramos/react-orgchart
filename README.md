@@ -100,9 +100,21 @@
     <tr>
       <td>zoomoutLimit</td>
       <td>number</td>
-      <td>0.5</td>
+      <td>0.2</td>
       <td>User can zoom the chart at different scales(0.5~7).</td>
     </tr>
+    <tr>
+      <td>zoomStep</td>
+      <td>number</td>
+      <td>0.2</td>
+      <td>User can set the behavior of the zoom.</td>
+    </tr>    
+    <tr>
+      <td>firstNodeId</td>
+      <td>string</td>
+      <td>null</td>
+      <td>User can set the first node for use the center method.</td>
+    </tr>    
   </tbody>
 </table>
 
@@ -123,12 +135,28 @@
       <td>exportTo</td>
       <td>User can use this method to export orgchart to png org pdf file. Sample code: orgchartRef.current.exportTo(filename, fileextension)</td>
     </tr>
+    <tr>
+      <td>zoomIn</td>
+      <td>User can use this method to zoom in the orgchart</td>
+    </tr>
+    <tr>
+      <td>zoomOut</td>
+      <td>User can use this method to zoom out the orgchart</td>
+    </tr>
+    <tr>
+      <td>center</td>
+      <td>User can use this method to center the orgchart (first you need to define the firstNodeId property)</td>
+    </tr>    
+    <tr>
+      <td>goTo</td>
+      <td>User can use this method to go to the specific node</td>
+    </tr>
   </tbody>
 </table>
 
 ## Install
 ```
-npm install @dabeng/react-orgchart
+npm install @eayti/react-orgchart
 ```
 
 ## [Demo](https://codesandbox.io/s/react-orgchart-demo-o3nf6)

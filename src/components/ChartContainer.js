@@ -19,6 +19,7 @@ const propTypes = {
   zoom: PropTypes.bool,
   zoomoutLimit: PropTypes.number,
   zoominLimit: PropTypes.number,
+  zoomStep: PropTypes.number,
   containerClass: PropTypes.string,
   chartClass: PropTypes.string,
   NodeTemplate: PropTypes.elementType,
@@ -26,19 +27,22 @@ const propTypes = {
   collapsible: PropTypes.bool,
   multipleSelect: PropTypes.bool,
   onClickNode: PropTypes.func,
-  onClickChart: PropTypes.func
+  onClickChart: PropTypes.func,
+  firstNodeId: PropTypes.string
 };
 
 const defaultProps = {
   pan: false,
   zoom: false,
-  zoomoutLimit: 0.5,
+  zoomoutLimit: 0.2,
   zoominLimit: 7,
+  zoomStep: 0.2,
   containerClass: "",
   chartClass: "",
   draggable: false,
   collapsible: true,
-  multipleSelect: false
+  multipleSelect: false,
+  firstNodeId: null
 };
 
 const ChartContainer = forwardRef(
@@ -49,6 +53,7 @@ const ChartContainer = forwardRef(
       zoom,
       zoomoutLimit,
       zoominLimit,
+      zoomStep,
       containerClass,
       chartClass,
       NodeTemplate,
@@ -56,7 +61,8 @@ const ChartContainer = forwardRef(
       collapsible,
       multipleSelect,
       onClickNode,
-      onClickChart
+      onClickChart,
+      firstNodeId
     },
     ref
   ) => {
@@ -72,6 +78,7 @@ const ChartContainer = forwardRef(
     const [exporting, setExporting] = useState(false);
     const [dataURL, setDataURL] = useState("");
     const [download, setDownload] = useState("");
+    const [currentZoom, setCurrentZoom] = useState(1);
 
     const attachRel = (data, flags) => {
       data.relationship =
@@ -87,7 +94,10 @@ const ChartContainer = forwardRef(
     const [ds, setDS] = useState(datasource);
     useEffect(() => {
       setDS(datasource);
-    }, [datasource]);
+      setTimeout(() => {
+        if (firstNodeId) goToAnimation(firstNodeId);  
+      } , 300);
+    }, [datasource]); // eslint-disable-line
 
     const dsDigger = new JSONDigger(datasource, "id", "children");
 
@@ -291,9 +301,39 @@ const ChartContainer = forwardRef(
               "isAncestorsCollapsed"
             );
           });
-      }
+      },
+      zoomIn: function zoomIn() {
+        const zoom = parseFloat(parseFloat(currentZoom + zoomStep).toFixed(1));
+        if (zoom > zoominLimit) return;
+        setCurrentZoom(zoom);
+        updateChartScale(zoom);
+      },
+      zoomOut: function zoomOut() {
+        const zoom = parseFloat(parseFloat(currentZoom - zoomStep).toFixed(1));
+        if (zoom < zoomoutLimit) return;
+        setCurrentZoom(zoom);
+        updateChartScale(zoom);
+      },
+      center: function center() {
+        setCurrentZoom(1);
+        setTransform("matrix(1,0,0,1,0,0)");
+        goToAnimation(firstNodeId);
+      },      
+      goTo: function goTo({node, options}) {
+        setCurrentZoom(1);
+        setTransform("matrix(1,0,0,1,0,0)");
+        goToAnimation(node, options);
+      },
     }));
 
+    const goToAnimation = ({node, options}) => {
+      document.querySelector('#'+node).scrollIntoView(options || {
+        behavior: 'smooth',
+          inline: 'center',
+          block: 'end'
+      })      
+    }
+    
     return (
       <div
         ref={container}
