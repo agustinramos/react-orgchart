@@ -28,7 +28,6 @@ const propTypes = {
   multipleSelect: PropTypes.bool,
   onClickNode: PropTypes.func,
   onClickChart: PropTypes.func,
-  firstNodeId: PropTypes.string
 };
 
 const defaultProps = {
@@ -42,7 +41,6 @@ const defaultProps = {
   draggable: false,
   collapsible: true,
   multipleSelect: false,
-  firstNodeId: null
 };
 
 const ChartContainer = forwardRef(
@@ -61,8 +59,7 @@ const ChartContainer = forwardRef(
       collapsible,
       multipleSelect,
       onClickNode,
-      onClickChart,
-      firstNodeId
+      onClickChart
     },
     ref
   ) => {
@@ -79,6 +76,7 @@ const ChartContainer = forwardRef(
     const [dataURL, setDataURL] = useState("");
     const [download, setDownload] = useState("");
     const [currentZoom, setCurrentZoom] = useState(1);
+    const [firstNode, setFirstNode] = useState(null);
 
     const attachRel = (data, flags) => {
       data.relationship =
@@ -92,19 +90,39 @@ const ChartContainer = forwardRef(
     };
 
     const goToAnimation = ({ node, options }) => {
-      if (node)
-        document.querySelector('#'+node).scrollIntoView(options || {
-          behavior: 'smooth',
-            inline: 'center',
-            block: 'end'
-        })      
+      if (node) {
+        const element = document.querySelector('.orgchart [id="' + node + '"]')
+        if (element) {
+          element.scrollIntoView(
+            options || {
+              behavior: 'smooth',
+              inline: 'center',
+              block: 'end',
+            }
+          )
+          setTimeout(() => {
+            element.scrollIntoView(
+              options || {
+                behavior: 'smooth',
+                inline: 'center',
+                block: 'end',
+              }
+            )
+          })      
+        }  
+      }  
     }
 
     const [ds, setDS] = useState(datasource);
     useEffect(() => {
       setDS(datasource);
       setTimeout(() => {
-        if (firstNodeId) goToAnimation({ node: firstNodeId });  
+        if (datasource && datasource.id) {
+          setFirstNode(datasource.id)
+          goToAnimation({
+            node: datasource.id,
+          });
+        }
       } , 300);
     }, [datasource]); // eslint-disable-line
 
@@ -324,9 +342,13 @@ const ChartContainer = forwardRef(
         setTransform(`matrix(${zoom},0,0,${zoom},0,0)`);
       },
       center: function center() {
-        setCurrentZoom(1);
-        setTransform("matrix(1,0,0,1,0,0)");
-        goToAnimation({ node: firstNodeId });
+        if (firstNode) {
+          setCurrentZoom(1)
+          setTransform('matrix(1,0,0,1,0,0)')
+          goToAnimation({
+            node: firstNode,
+          })
+        }        
       },      
       goTo: function goTo({node, options}) {
         setCurrentZoom(1);

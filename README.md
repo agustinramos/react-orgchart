@@ -109,12 +109,6 @@
       <td>0.2</td>
       <td>User can set the behavior of the zoom.</td>
     </tr>    
-    <tr>
-      <td>firstNodeId</td>
-      <td>string</td>
-      <td>null</td>
-      <td>User can set the first node for use the center method.</td>
-    </tr>    
   </tbody>
 </table>
 
@@ -145,7 +139,7 @@
     </tr>
     <tr>
       <td>center</td>
-      <td>User can use this method to center the orgchart (first you need to define the firstNodeId property)</td>
+      <td>User can use this method to center the orgchart</td>
     </tr>    
     <tr>
       <td>goTo</td>
