@@ -315,13 +315,13 @@ const ChartContainer = forwardRef(
         const zoom = parseFloat(parseFloat(currentZoom + zoomStep).toFixed(1));
         if (zoom > zoominLimit) return;
         setCurrentZoom(zoom);
-        updateChartScale(zoom);
+        setTransform(`matrix(${zoom},0,0,${zoom},0,0)`);
       },
       zoomOut: function zoomOut() {
         const zoom = parseFloat(parseFloat(currentZoom - zoomStep).toFixed(1));
         if (zoom < zoomoutLimit) return;
         setCurrentZoom(zoom);
-        updateChartScale(zoom);
+        setTransform(`matrix(${zoom},0,0,${zoom},0,0)`);
       },
       center: function center() {
         setCurrentZoom(1);
