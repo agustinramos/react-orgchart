@@ -1,0 +1,9 @@
+{
+    "editor.formatOnSave": true,
+    "files.associations": {
+        ".env*": "ini",
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+}
