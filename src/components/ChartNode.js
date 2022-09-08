@@ -200,11 +200,15 @@ const ChartNode = ({
     dragNodeService.sendDragInfo(id)
   }
 
-  const clickNodeHandler = (event) => {
-    if (onClickNode) {
-      onClickNode(datasource)
-    }
+  const expandAllEdges = () => {
+    setTopEdgeExpanded(false)
+    setIsChildrenCollapsed(false)
+    setLeftEdgeExpanded(true)
+    setRightEdgeExpanded(true)
+  }
 
+  const clickNodeHandler = (event) => {
+    if (onClickNode) onClickNode({ ...datasource, expandAllEdges })
     selectNodeService.sendSelectedNodeInfo(datasource.id)
   }
 
